@@ -25,23 +25,23 @@ async function loadBooks() {
       const image = getCoverFromISBN(book.isbn);
       const card = document.createElement('div');
       card.className = 'book-card';
+
       const img = document.createElement('img');
       img.src = image;
       img.alt = book.title;
       img.onerror = () => {
-      img.src = 'images/fallbackCover.jpg';
-    };
+        img.src = 'images/fallbackCover.jpg';
+      };
 
-    const card = document.createElement('div');
-    card.className = 'book-card';
-    card.appendChild(img);
-    card.innerHTML += `
-      <h2>${book.title}</h2>
-      <p>${book.author}</p>
-    `;
+      card.appendChild(img);
+      card.innerHTML += `
+        <h2>${book.title}</h2>
+        <p>${book.author}</p>
+      `;
 
       bookGrid.appendChild(card);
     });
+
   } catch (err) {
     console.error('Failed to load books:', err);
     bookGrid.innerHTML = `<p style="color: red;">Error loading books. Check the console for details.</p>`;
