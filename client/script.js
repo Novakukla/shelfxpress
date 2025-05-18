@@ -1,7 +1,7 @@
 const bookGrid = document.getElementById('bookGrid');
 
 function getCoverFromISBN(isbn) {
-  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
 }
 
 async function loadBooks() {
@@ -29,9 +29,16 @@ async function loadBooks() {
       const img = document.createElement('img');
       img.src = image;
       img.alt = book.title;
-      img.onerror = () => {
-        img.src = 'images/fallbackCover.jpg';
+      img.onerror = function () 
+      {
+        console.warn(`Missing cover for ISBN ${book.isbn}, using fallback.`);
+        const fallback = new Image();
+        fallback.src = 'images/fallbackCover.jpg';
+        fallback.alt = book.title;
+        fallback.className = this.className;
+        this.replaceWith(fallback);
       };
+
 
       card.appendChild(img);
       card.innerHTML += `
