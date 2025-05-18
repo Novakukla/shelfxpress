@@ -1,7 +1,7 @@
 const bookGrid = document.getElementById('bookGrid');
 
 function getCoverFromISBN(isbn) {
-  return `https://shelfxpress-server.onrender.com/cover/${isbn}`;
+  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 }
 
 async function loadBooks() {
