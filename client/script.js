@@ -15,19 +15,31 @@ async function loadBooks() {
     const data = await res.json();
     console.log('Received from API:', data);
 
-    if (!Array.isArray(data)) {
+    if (!Array.isArray(data)) 
+    {
       throw new Error('Expected an array but got: ' + JSON.stringify(data));
     }
 
-    data.forEach(book => {
+    data.forEach(book => 
+    {
       const image = getCoverFromISBN(book.isbn);
       const card = document.createElement('div');
       card.className = 'book-card';
-      card.innerHTML = `
-        <img src="${image}" alt="${book.title}">
-        <h2>${book.title}</h2>
-        <p>${book.author}</p>
-      `;
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = book.title;
+      img.onerror = () => {
+      img.src = 'images/fallbackCover.jpg';
+    };
+
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.appendChild(img);
+    card.innerHTML += `
+      <h2>${book.title}</h2>
+      <p>${book.author}</p>
+    `;
+
       bookGrid.appendChild(card);
     });
   } catch (err) {
