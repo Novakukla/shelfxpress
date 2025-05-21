@@ -56,7 +56,6 @@ async function loadBooks() {
 }
 
 
-// Wait for DOM content before adding event listeners
 document.addEventListener("DOMContentLoaded", () => {
   loadBooks();
 
@@ -76,4 +75,84 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('sidebar').classList.remove('open');
     });
   }
+
+  const switchBtn = document.getElementById('switchLoginType');
+  const userTypeInput = document.getElementById('userType');
+  const loginTitle = document.getElementById('loginTitle');
+  const identifierLabel = document.getElementById('identifierLabel');
+
+  switchBtn?.addEventListener('click', () => {
+    if (userTypeInput.value === 'customer') {
+      userTypeInput.value = 'employee';
+      loginTitle.textContent = 'Employee Login';
+      identifierLabel.textContent = 'Username';
+      switchBtn.textContent = 'Switch to Customer';
+    } else {
+      userTypeInput.value = 'customer';
+      loginTitle.textContent = 'Customer Login';
+      identifierLabel.textContent = 'Email';
+      switchBtn.textContent = 'Switch to Employee';
+    }
+  });
+
+
+  const loginModal = document.getElementById('loginModal');
+  const openLoginModal = document.getElementById('openLoginModal');
+  const closeLoginModal = document.getElementById('closeLoginModal');
+
+  openLoginModal?.addEventListener('click', () => {
+    loginModal.style.display = 'block';
+  });
+
+  closeLoginModal?.addEventListener('click', () => {
+    loginModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === loginModal) {
+      loginModal.style.display = 'none';
+    }
+  });
+
+
+  // Login logic
+  const loginBtn = document.getElementById('loginBtn');
+  loginBtn?.addEventListener('click', async () => {
+    const userType = document.getElementById('userType').value;
+    const identifier = document.getElementById('loginIdentifier').value;
+    const password = document.getElementById('loginPassword').value;
+    const message = document.getElementById('loginMessage');
+
+    if (!identifier || !password) {
+      message.textContent = 'Please fill in all fields.';
+      return;
+    }
+
+    const payload = userType === 'customer'
+      ? { email: identifier, password }
+      : { username: identifier, password };
+
+    try {
+      const res = await fetch(`https://shelfxpress-server.onrender.com/api/login/${userType}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        message.style.color = 'red';
+        message.textContent = data || 'Login failed.';
+      } else {
+        message.style.color = 'green';
+        message.textContent = `Logged in as ${data.name} (${data.role})`;
+        console.log('Login successful:', data);
+        // Optionally: store login state or hide login form here
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      message.textContent = 'An error occurred during login.';
+    }
+  });
 });

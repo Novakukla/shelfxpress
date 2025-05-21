@@ -4,7 +4,8 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-const https = require('https'); // Only need this once
+const https = require('https');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -61,6 +62,54 @@ app.get('/cover/:isbn', (req, res) => {
   });
 });
 */
+// LOGIN ROUTES
+
+// Customer login
+app.post('/api/login/customer', (req, res) => {
+  const { email, password } = req.body;
+
+  const query = 'SELECT * FROM customers WHERE email = ?';
+  db.query(query, [email], async (err, results) => {
+    if (err) return res.status(500).send('DB error');
+    if (results.length === 0) return res.status(401).send('Invalid email or password');
+
+    const customer = results[0];
+    const match = await bcrypt.compare(password, customer.password);
+
+    if (!match) return res.status(401).send('Invalid email or password');
+
+    res.json({
+      id: customer.cust_id,
+      name: customer.name,
+      email: customer.email,
+      role: 'customer'
+    });
+  });
+});
+
+// Employee login
+app.post('/api/login/employee', (req, res) => {
+  const { username, password } = req.body;
+
+  const query = 'SELECT * FROM employees WHERE username = ?';
+  db.query(query, [username], async (err, results) => {
+    if (err) return res.status(500).send('DB error');
+    if (results.length === 0) return res.status(401).send('Invalid username or password');
+
+    const employee = results[0];
+    const match = await bcrypt.compare(password, employee.password);
+
+    if (!match) return res.status(401).send('Invalid username or password');
+
+    res.json({
+      id: employee.emp_id,
+      name: employee.fullname,
+      username: employee.username,
+      role: 'employee'
+    });
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);

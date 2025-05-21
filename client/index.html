@@ -6,6 +6,7 @@
   <title>ShelfXpress</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 <header>
   <button id="toggleSidebar" class="menu-btn">&#9776;</button>
@@ -17,6 +18,7 @@
     <a href="#">Fiction</a>
     <a href="#">Non-Fiction</a>
   </nav>
+  <button id="openLoginModal" class="login-btn">Login</button>
 </header>
 <aside class="sidebar" id="sidebar">
   <button id="closeSidebar" class="close-btn">&times;</button>
@@ -52,8 +54,37 @@
 
 
 
+
   <main id="bookGrid"></main>
 
   <script src="script.js"></script>
+  
+  <div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span id="closeLoginModal" class="close">&times;</span>
+
+    <div class="login-header">
+      <h2 id="loginTitle">Customer Login</h2>
+      <button id="switchLoginType" class="switch-btn">Switch to Employee</button>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="loginIdentifier" required>
+      <label id="identifierLabel" for="loginIdentifier">Email</label>
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="loginPassword" required>
+      <label for="loginPassword">Password</label>
+    </div>
+
+    <button id="loginBtn" class="submit-btn">Log In</button>
+    <p id="loginMessage" class="login-message"></p>
+
+    <input type="hidden" id="userType" value="customer">
+  </div>
+</div>
+
+
 </body>
 </html>
