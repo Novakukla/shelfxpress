@@ -120,7 +120,7 @@ app.get('/api/orders/active', (req, res) =>
       o.tracking_num,
       c.name AS customer_name
     FROM orders o
-    JOIN customers c ON o.cust_id = c.cust_id
+    JOIN customer c ON o.cust_id = c.cust_id
     WHERE o.tracking_num IS NULL OR o.tracking_num = ''
     ORDER BY o.order_num DESC
   `;
@@ -132,9 +132,11 @@ app.get('/api/orders/active', (req, res) =>
       console.error('Error fetching active orders:', err);
       return res.status(500).json({ error: 'Database error' });
     }
+    console.log('Active Orders Query Result:', results); // debug line
     res.json(results);
   });
 });
+
 
 
 // Start server
