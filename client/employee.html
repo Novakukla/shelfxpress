@@ -14,7 +14,7 @@
     <p>Welcome! You are now logged in as an employee.</p>
 
     <section id="activeOrdersSection">
-    <h2>📦 Active Orders</h2>
+    <h2>Active Orders</h2>
     <div id="ordersList">
       <p>Loading active orders...</p>
     </div>
@@ -41,7 +41,7 @@
             <h3>Order #${order.order_num}</h3>
             <p><strong>Customer:</strong> ${order.customer_name}</p>
             <p><strong>Title:</strong> ${order.title}</p>
-            <p><strong>Total:</strong> $${order.total_price.toFixed(2)}</p>
+            <p><strong>Total:</strong> $${parseFloat(order.total_price).toFixed(2)}</p>
           `;
           ordersList.appendChild(div);
         });
