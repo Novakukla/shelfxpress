@@ -123,7 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById('loginPassword').value;
     const message = document.getElementById('loginMessage');
 
-    if (!identifier || !password) {
+    if (!identifier || !password) 
+    {
       message.textContent = 'Please fill in all fields.';
       return;
     }
@@ -132,8 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ? { email: identifier, password }
       : { username: identifier, password };
 
-    try {
-      const res = await fetch(`https://shelfxpress-server.onrender.com/api/login/${userType}`, {
+    try 
+    {
+      const res = await fetch(`https://shelfxpress-server.onrender.com/api/login/${userType}`, 
+      {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -141,16 +144,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      if (!res.ok) {
+      if (!res.ok) 
+      {
         message.style.color = 'red';
         message.textContent = data || 'Login failed.';
-      } else {
+      } 
+      else 
+      {
         message.style.color = 'green';
         message.textContent = `Logged in as ${data.name} (${data.role})`;
         console.log('Login successful:', data);
-        // Optionally: store login state or hide login form here
+
+        if (data.role === 'employee') 
+        {
+          // Delay to show message briefly
+          setTimeout(() => 
+          {
+            window.location.href = 'employee.html';
+          }, 1000);
+        }
       }
-    } catch (err) {
+
+    } 
+    catch (err) 
+    {
       console.error('Login error:', err);
       message.textContent = 'An error occurred during login.';
     }

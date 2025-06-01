@@ -301,3 +301,11 @@ footer {
   margin-top: 10px;
   font-size: 0.9rem;
 }
+.order-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Employee Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1 style="margin-left: 2rem;">📊 Employee Dashboard</h1>
+  </header>
+
+  <main style="padding: 2rem;">
+    <p>Welcome! You are now logged in as an employee.</p>
+
+    <section id="activeOrdersSection">
+    <h2>📦 Active Orders</h2>
+    <div id="ordersList">
+      <p>Loading active orders...</p>
+    </div>
+  </section>
+
+  <script>
+    async function loadActiveOrders() {
+      try {
+        const res = await fetch('https://shelfxpress-server.onrender.com/api/orders/active');
+        const orders = await res.json();
+
+        const ordersList = document.getElementById('ordersList');
+        ordersList.innerHTML = '';
+
+        if (orders.length === 0) {
+          ordersList.innerHTML = '<p>No active orders at this time.</p>';
+          return;
+        }
+
+        orders.forEach(order => {
+          const div = document.createElement('div');
+          div.className = 'order-card';
+          div.innerHTML = `
+            <h3>Order #${order.order_num}</h3>
+            <p><strong>Customer:</strong> ${order.customer_name}</p>
+            <p><strong>Title:</strong> ${order.title}</p>
+            <p><strong>Total:</strong> $${order.total_price.toFixed(2)}</p>
+          `;
+          ordersList.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Failed to load active orders:', err);
+        document.getElementById('ordersList').innerHTML = '<p>Error loading orders.</p>';
+      }
+    }
+
+  document.addEventListener('DOMContentLoaded', loadActiveOrders);
+</script>
+
+    <!-- Placeholder for future features like viewing orders, managing inventory, etc. -->
+  </main>
+</body>
+</html>
