@@ -18,8 +18,10 @@
     <a href="#">Fiction</a>
     <a href="#">Non-Fiction</a>
   </nav>
+  <button id="viewCartBtn"><img src="images/shoppingCart.png" width="25" height="25"></button>
   <button id="openLoginModal" class="login-btn">Login</button>
 </header>
+
 <aside class="sidebar" id="sidebar">
   <button id="closeSidebar" class="close-btn">&times;</button>
 
@@ -52,14 +54,21 @@
   <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
 </aside>
 
+<main id="bookGrid"></main>
 
+<!-- Cart Modal -->
+<div id="cartModal" class="modal">
+  <div class="modal-content">
+    <span id="closeCartModal" class="close">&times;</span>
+    <h2>Your Cart</h2>
+    <div id="cartContents"></div>
+    <p id="cartTotal"></p>
+    <button id="checkoutBtn" class="submit-btn">Checkout</button>
+  </div>
+</div>
 
-
-  <main id="bookGrid"></main>
-
-  <script src="script.js"></script>
-  
-  <div id="loginModal" class="modal">
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
   <div class="modal-content">
     <span id="closeLoginModal" class="close">&times;</span>
 
@@ -85,6 +94,6 @@
   </div>
 </div>
 
-
+<script src="script.js"></script>
 </body>
 </html>
