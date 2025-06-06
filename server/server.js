@@ -137,6 +137,24 @@ app.get('/api/orders/active', (req, res) =>
   });
 });
 
+// Add new book to database
+app.post('/api/books', (req, res) => {
+  const { title, author, isbn, price, quantity } = req.body;
+
+  if (!title || !author || !isbn || price == null || quantity == null) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  const query = 'INSERT INTO books (title, author, isbn, price, quantity) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [title, author, isbn, price, quantity], (err, result) => {
+    if (err) {
+      console.error('Error inserting book:', err);
+      return res.status(500).json({ error: 'Database insert failed' });
+    }
+    res.json({ message: 'Book added successfully' });
+  });
+});
+
 
 
 // Start server
