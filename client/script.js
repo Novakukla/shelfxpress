@@ -46,8 +46,11 @@ function removeFromCart(index) {
 
 const bookGrid = document.getElementById('bookGrid');
 
+// Google Books API (currently unused)
 const apiKey = 'AIzaSyDfP95KiVS6MW0YBEjeLf3lbsel03DdIX8';
 
+/*
+// Google Books cover fetch (disabled)
 async function getCoverFromGoogle(isbn) {
   try {
     const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${apiKey}`);
@@ -58,7 +61,12 @@ async function getCoverFromGoogle(isbn) {
     return 'images/fallbackCover.jpg';
   }
 }
+*/
 
+// Open Library cover fetch (currently active)
+function getCoverFromISBN(isbn) {
+  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+}
 
 async function loadBooks() {
   try {
@@ -69,7 +77,7 @@ async function loadBooks() {
     if (!Array.isArray(data)) throw new Error('Expected an array.');
 
     for (const book of data) {
-      const image = await getCoverFromGoogle(book.isbn);
+      const image = getCoverFromISBN(book.isbn);
       const card = document.createElement('div');
       card.className = 'book-card';
 

@@ -155,7 +155,7 @@ footer {
 
 .clear-filters-btn {
   padding: 8px 12px;
-  background-color: #4CAF50;
+  background-color: #bca4e3;
   color: white;
   border: none;
   border-radius: 5px;
@@ -171,7 +171,7 @@ footer {
 
 /* Login Button */
 .login-btn {
-  background: #4CAF50;
+  background: #bca4e3;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -182,7 +182,7 @@ footer {
 }
 
 .login-btn:hover {
-  background-color: #45a049;
+  background-color: #dcd0ff;
 }
 
 /* Modal Styling */
@@ -255,7 +255,7 @@ footer {
 }
 
 .input-group input:focus {
-  border-color: #4CAF50;
+  border-color: #dcd0ff;
   background: white;
 }
 
@@ -273,14 +273,14 @@ footer {
 .input-group input:not(:placeholder-shown) + label {
   top: -10px;
   font-size: 0.8rem;
-  color: #4CAF50;
+  color: #dcd0ff;
   background: white;
   padding: 0 4px;
 }
 
 .submit-btn {
   width: 100%;
-  background: #4CAF50;
+  background: #bca4e3;
   color: white;
   border: none;
   padding: 12px;
@@ -291,7 +291,7 @@ footer {
 }
 
 .submit-btn:hover {
-  background: #45a049;
+  background: #dcd0ff;
 }
 
 .login-message {
