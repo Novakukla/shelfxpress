@@ -30,7 +30,7 @@ db.connect(err => {
     console.error('Database connection failed:', err);
     process.exit(1);
   }
-  console.log('✅ Connected to MySQL database.');
+  console.log('Connected to MySQL database.');
 });
 
 // Endpoint: Get all books
@@ -159,5 +159,5 @@ app.post('/api/books', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

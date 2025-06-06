@@ -6,19 +6,31 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1 style="margin-left: 2rem;">Employee Dashboard</h1>
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #222; color: white;">
+    <h1>Employee Dashboard</h1>
+    <button onclick="window.location.href='index.html'" class="login-btn">Home</button>
   </header>
+
 
   <main style="padding: 2rem;">
     <p>Welcome! You are now logged in as an employee.</p>
 
     <section id="activeOrdersSection">
-    <h2>Active Orders</h2>
-    <div id="ordersList">
-      <p>Loading active orders...</p>
-    </div>
-  </section>
+      <h2>Active Orders</h2>
+      <div id="ordersList">
+        <p>Loading active orders...</p>
+      </div>
+    </section>
+
+    <section id="addBookSection">
+      <h2>Add Book by ISBN</h2>
+      <form id="addBookForm">
+        <label>ISBN: <input type="text" id="bookISBN" required></label><br><br>
+        <button type="submit" class="submit-btn">Add Book</button>
+      </form>
+      <p id="addBookMessage"></p>
+    </section>
+  </main>
 
   <script>
     async function loadActiveOrders() {
@@ -51,10 +63,63 @@
       }
     }
 
-  document.addEventListener('DOMContentLoaded', loadActiveOrders);
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadActiveOrders();
 
-    <!-- Placeholder for future features like viewing orders, managing inventory, etc. -->
-  </main>
+      const addForm = document.getElementById('addBookForm');
+      const isbnInput = document.getElementById('bookISBN');
+      const msg = document.getElementById('addBookMessage');
+
+      addForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const isbn = isbnInput.value.trim();
+
+        if (!isbn) {
+          msg.style.color = 'red';
+          msg.textContent = 'ISBN is required.';
+          return;
+        }
+
+        msg.style.color = 'black';
+        msg.textContent = 'Fetching book data...';
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+          const data = await res.json();
+          const book = data.items?.[0]?.volumeInfo;
+
+          if (!book) 
+          {
+            msg.style.color = 'red';
+            msg.textContent = 'Book not found in Google Books.';
+            return;
+          }
+
+          const title = book.title || 'Unknown Title';
+          const author = book.authors?.[0] || 'Unknown Author';
+
+          const price = 10.0;
+          const quantity = 5;
+
+          const postRes = await fetch('https://shelfxpress-server.onrender.com/api/books', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, author, isbn, price, quantity })
+          });
+
+          const result = await postRes.json();
+          msg.style.color = postRes.ok ? 'green' : 'red';
+          msg.textContent = result.message || result.error;
+
+          if (postRes.ok) addForm.reset();
+
+        } catch (err) {
+          msg.style.color = 'red';
+          msg.textContent = 'Error adding book.';
+          console.error(err);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

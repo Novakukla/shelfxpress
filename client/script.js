@@ -46,8 +46,15 @@ function removeFromCart(index) {
 
 const bookGrid = document.getElementById('bookGrid');
 
-function getCoverFromISBN(isbn) {
-  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+async function getCoverFromGoogle(isbn) {
+  try {
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+    const data = await res.json();
+    const book = data.items?.[0]?.volumeInfo;
+    return book?.imageLinks?.thumbnail || 'images/fallbackCover.jpg';
+  } catch {
+    return 'images/fallbackCover.jpg';
+  }
 }
 
 async function loadBooks() {
@@ -58,8 +65,8 @@ async function loadBooks() {
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error('Expected an array.');
 
-    data.forEach(book => {
-      const image = getCoverFromISBN(book.isbn);
+    for (const book of data) {
+      const image = await getCoverFromGoogle(book.isbn);
       const card = document.createElement('div');
       card.className = 'book-card';
 
@@ -87,7 +94,7 @@ async function loadBooks() {
       });
 
       bookGrid.appendChild(card);
-    });
+    }
   } catch (err) {
     console.error('Failed to load books:', err);
     bookGrid.innerHTML = `<p style="color: red;">Error loading books.</p>`;
