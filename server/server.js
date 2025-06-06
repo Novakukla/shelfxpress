@@ -14,13 +14,16 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MySQL using environment variables
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
   ssl: {
-    rejectUnauthorized: false // AlwaysData uses a shared certificate
+    rejectUnauthorized: false
   }
 });
 
