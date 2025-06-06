@@ -46,9 +46,11 @@ function removeFromCart(index) {
 
 const bookGrid = document.getElementById('bookGrid');
 
+const apiKey = 'AIzaSyDfP95KiVS6MW0YBEjeLf3lbsel03DdIX8';
+
 async function getCoverFromGoogle(isbn) {
   try {
-    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${apiKey}`);
     const data = await res.json();
     const book = data.items?.[0]?.volumeInfo;
     return book?.imageLinks?.thumbnail || 'images/fallbackCover.jpg';
@@ -56,6 +58,7 @@ async function getCoverFromGoogle(isbn) {
     return 'images/fallbackCover.jpg';
   }
 }
+
 
 async function loadBooks() {
   try {
